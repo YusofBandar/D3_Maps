@@ -16,10 +16,9 @@ var svg = d3.select("body").append("svg")
     .attr("height", height)
 
 
-var colour = d3.interpolateLab("#FF0303", "#0A3E1A");
-var colour1 = d3.interpolateLab("#000000","#FFFFFF");
+var colour = [d3.interpolateLab("#000000", "#FFFFFF"),d3.interpolateLab("#0CE64E", "#0A3E1A")];
 
-
+var i = 0;
 
 for (var l = 0; l < 2; l++) {
     let map = svg.append('g')
@@ -39,10 +38,8 @@ for (var l = 0; l < 2; l++) {
             .attr("d", path)
             .attr("class", "feature")
             .style("fill", function (d) {
-           
-                return colour(normalize(d.id));
-            
-       
+                var c = colour[i];
+                return c(normalize(d.id));
             })
 
 
@@ -53,7 +50,6 @@ for (var l = 0; l < 2; l++) {
 
     })
 
-  
     yOffset = yOffset + 1000;
 
     console.log(normalize(20));
