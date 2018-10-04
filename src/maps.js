@@ -21,6 +21,9 @@ var map = svg.append('g')
 
 
 
+var colour = d3.interpolateLab("#000000", "#FFFFFF");
+var i=0;
+
 d3.json('us.json', function (error, us) {
     if (error) throw error;
 
@@ -29,6 +32,12 @@ d3.json('us.json', function (error, us) {
         .enter().append("path")
         .attr("d", path)
         .attr("class", "feature")
+        .style("fill",function(d){
+            i =i + 0.01;
+            var c = colour(i);
+            console.log(i);
+            return c;
+        })
 
     map.append("path")
         .datum(topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; }))
@@ -36,3 +45,4 @@ d3.json('us.json', function (error, us) {
         .attr("d", path);
 
 })
+
