@@ -1,10 +1,13 @@
 var width = 960;
-var height = 700;
+var height = 500;
 
 
+var projection = d3.geoAlbers()
+    .scale(1000)
+    .translate([width / 2, height / 2]);
 
-
-var path = d3.geoPath();
+var path = d3.geoPath()
+    .projection(projection);
 
 
 var svg = d3.select("body").append("svg")
@@ -18,7 +21,7 @@ var map = svg.append('g')
 
 
 
-d3.json('https://unpkg.com/us-atlas@1/us/10m.json', function (error, us) {
+d3.json('us.json', function (error, us) {
     if (error) throw error;
 
     map.selectAll("path")
