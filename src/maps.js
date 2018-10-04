@@ -1,5 +1,5 @@
 var width = 960;
-var height = 500;
+var height = 3000;
 
 
 var projection = d3.geoAlbers()
@@ -12,14 +12,11 @@ var path = d3.geoPath()
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
-    .attr("height", height);
-
-
+    .attr("height", height)
 
 var map = svg.append('g')
-    .style("stroke-width", "1.5px");
-
-
+    .style("stroke-width", "1.5px")
+    .attr("transform","translate(0,-1200)")
 
 var colour = d3.interpolateLab("#000000", "#FFFFFF");
 var i=0;
