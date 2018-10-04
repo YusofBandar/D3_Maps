@@ -1,6 +1,7 @@
-var width = 960;
+var width = 1700;
 var height = 3000;
 
+var yOffset = 400;
 
 var projection = d3.geoAlbers()
     .scale(1000)
@@ -14,32 +15,63 @@ var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height)
 
-var map = svg.append('g')
-    .style("stroke-width", "1.5px")
-    .attr("transform","translate(0,-1200)")
 
-var colour = d3.interpolateLab("#000000", "#FFFFFF");
-var i=0;
+var colour = d3.interpolateLab("#FF0303", "#0A3E1A");
+var colour1 = d3.interpolateLab("#000000","#FFFFFF");
 
-d3.json('us.json', function (error, us) {
-    if (error) throw error;
 
-    map.selectAll("path")
-        .data(topojson.feature(us, us.objects.states).features)
-        .enter().append("path")
-        .attr("d", path)
-        .attr("class", "feature")
-        .style("fill",function(d){
-            i =i + 0.01;
-            var c = colour(i);
-            console.log(i);
-            return c;
-        })
 
-    map.append("path")
-        .datum(topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; }))
-        .attr("class", "mesh")
-        .attr("d", path);
+for (var l = 0; l < 2; l++) {
+    let map = svg.append('g')
+        .style("stroke-width", "1.5px")
+        .attr("transform", "translate(200," + (-1200 + yOffset) + ")")
 
-})
+
+
+
+
+    d3.json('us.json', function (error, us) {
+        if (error) throw error;
+
+        map.selectAll("path")
+            .data(topojson.feature(us, us.objects.states).features)
+            .enter().append("path")
+            .attr("d", path)
+            .attr("class", "feature")
+            .style("fill", function (d) {
+           
+                return colour(normalize(d.id));
+            
+       
+            })
+
+
+        map.append("path")
+            .datum(topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; }))
+            .attr("class", "mesh")
+            .attr("d", path);
+
+    })
+
+  
+    yOffset = yOffset + 1000;
+
+    console.log(normalize(20));
+}
+
+
+function normalize(val) {
+   var result = (val - 0) * (1-0.1)/(54-1) + 0.1
+   return result;
+}
+
+
+
+
+
+
+
+
+
+
 
