@@ -16,21 +16,17 @@ var svg = d3.select("body").append("svg")
     .attr("height", height)
 
 
-var colour = [d3.interpolateLab("#000000", "#FFFFFF"),d3.interpolateLab("#0CE64E", "#0A3E1A")];
+var colour = d3.interpolateLab("#000000", "#FFFFFF");
 
 var i = 0;
-
-for (var l = 0; l < 2; l++) {
-    let map = svg.append('g')
-        .style("stroke-width", "1.5px")
-        .attr("transform", "translate(200," + (-1200 + yOffset) + ")")
+d3.json('us.json', function (error, us) {
+    if (error) throw error;
 
 
-
-
-
-    d3.json('us.json', function (error, us) {
-        if (error) throw error;
+    for (var i = 0; i < 2; i++) {
+        var map = svg.append('g')
+            .style("stroke-width", "1.5px")
+            .attr("transform", "translate(200," + (-1200 + yOffset) + ")");
 
         map.selectAll("path")
             .data(topojson.feature(us, us.objects.states).features)
@@ -38,36 +34,27 @@ for (var l = 0; l < 2; l++) {
             .attr("d", path)
             .attr("class", "feature")
             .style("fill", function (d) {
-                var c = colour[i];
+                var c = colour;
                 return c(normalize(d.id));
             })
 
 
         map.append("path")
-            .datum(topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; }))
+            .datum(topojson.mesh(us, us.objects.states, function (a, b) {
+                return a !== b;
+            }))
             .attr("class", "mesh")
             .attr("d", path);
 
-    })
+            yOffset += 1000;
+    }
 
-    yOffset = yOffset + 1000;
 
-    console.log(normalize(20));
-}
+})
+
 
 
 function normalize(val) {
-   var result = (val - 0) * (1-0.1)/(54-1) + 0.1
-   return result;
+    var result = (val - 0) * (1 - 0.1) / (54 - 1) + 0.1
+    return result;
 }
-
-
-
-
-
-
-
-
-
-
-
